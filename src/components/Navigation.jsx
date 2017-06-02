@@ -1,9 +1,10 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
+import CustomNavigation from './CustomNavigation.jsx';
 
 const Navigation = () => (
   <AppBar
-    title={<a href="/" style={{ textDecoration: 'none' }}><font color="white">Pretzel</font></a>}
+    title={<CustomNavigation />}
     iconClassNameRight="muidocs-icon-navigation-expand-more"
     style={{ backgroundColor: 'black' }}
   />
