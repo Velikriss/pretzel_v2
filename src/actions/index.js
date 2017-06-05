@@ -16,3 +16,12 @@ export const getRss = feed => ({
 export const clearFeed = () => ({
   type: 'CLEAR_FEED',
 });
+
+export const login = user => ({
+	type: 'LOGIN',
+	user,
+});
+
+export const logout = () => ({
+	type: 'LOGOUT',
+});

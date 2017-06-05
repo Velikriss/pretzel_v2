@@ -1,6 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import GoogleLogin from 'react-google-login';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { login, logout } from '../actions/index';
 
 
 const signInUser = (response) => {
@@ -17,7 +20,7 @@ const signInUser = (response) => {
 		avatar: avatar
 	};
 
-	axios.post('/signup', user)
+	axios.post('/signup', {user: user})
 		.then(response => {
 			console.log(response, 'successfully created');
 		});
@@ -31,10 +34,15 @@ const signInError = response => {
 }
 
 class CustomNavigation extends React.Component {
+
+	componentDidMount() {
+    this.props.login({name: 'Nathan'});
+  }
+
 	render() {
 		return (
 			<div>
-			<a href="/" style={{ textDecoration: 'none' }}><font color="white">Pretzel</font></a>
+			<a href="/" style={{ textDecoration: 'none' }}><font color="white">Pretzel: {(this.props.user) ? this.props.user.name : 'No Guest'} </font></a>
 			<GoogleLogin 
 		    clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
 		    buttonText="Login"
@@ -58,4 +66,8 @@ class CustomNavigation extends React.Component {
 	}
 }
 
-export default CustomNavigation;
+const mapStateToProps = state => ({ user: state.auth});
+
+const matchDispatchToProps = dispatch => bindActionCreators({ login, logout }, dispatch);
+
+export default connect(mapStateToProps, matchDispatchToProps)(CustomNavigation);
