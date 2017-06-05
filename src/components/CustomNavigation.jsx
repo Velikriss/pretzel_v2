@@ -1,8 +1,33 @@
 import React from 'react';
+import axios from 'axios';
 import GoogleLogin from 'react-google-login';
 
-const responseGoogle = (response) => {
-  console.log(response);
+
+const signInUser = (response) => {
+	var profile = response.profileObj;
+	var name = profile.name;
+	var username = profile.email;
+	var avatar = profile.imageUrl;
+	var password = profile.googleId;
+
+	var user = {
+		name: name,
+		username: username,
+		password: password,
+		avatar: avatar
+	};
+
+	axios.post('/signup', user)
+		.then(response => {
+			console.log(response, 'successfully created');
+		});
+
+
+}
+
+const signInError = response => {
+	alert('Please sign in to post.');
+
 }
 
 class CustomNavigation extends React.Component {
@@ -13,8 +38,8 @@ class CustomNavigation extends React.Component {
 			<GoogleLogin 
 		    clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
 		    buttonText="Login"
-		    onSuccess={responseGoogle}
-		    onFailure={responseGoogle}
+		    onSuccess={signInUser}
+		    onFailure={signInError}
 		    style= {{
 		    	float:'right',
 		    	borderRadius: 100 + '%', 

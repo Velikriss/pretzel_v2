@@ -6,9 +6,11 @@ const morgan = require('morgan');
 const path = require('path');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackConfig = require('../webpack.config.js');
+
 const mongoose = require('mongoose');
 const Promise = require('bluebird');
 mongoose.Promise = Promise;
+const User = require('./controllers/user.js');
 
 const app = express();
 mongoose.connect('mongodb://localhost/pretzel');
@@ -48,6 +50,14 @@ app.get('/rss', (req, res) => {
       res.json(error);
     }
   });
+});
+
+app.post('/signup', (req, res) => {
+  User.insertUser(req.user)
+  .then(response => {
+    res.send(201);
+  });
+
 });
 
 const server = app.listen(3000, () => {
